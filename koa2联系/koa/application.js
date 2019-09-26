@@ -12,6 +12,7 @@ class Koa{
     use(cb){
         this.callbackFn = cb 
     }
+
     createContext(req,res) {
         // Object.create方法的作用  ctx可以拿到context的属性，但是添加的时候不修改context
         let ctx = Object.create(this.context)

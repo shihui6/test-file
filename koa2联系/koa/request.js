@@ -8,4 +8,5 @@ let request = {
         return url.parse(this.req.url).pathname
     }
 }
+
 module.exports = request

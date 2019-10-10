@@ -30,5 +30,5 @@ function dispatch(index){
    midleware({}, () => dispatch(index + 1))
 }
 // dispatch(0)
-(() => dispatch(0))()  //重要知识点
+(() => dispatch(0))()  //重要知识点 ()=>dispatch() 类似于 function dispatch这个函数
 

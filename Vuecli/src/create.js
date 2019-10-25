@@ -23,14 +23,27 @@ const fetchRepoList = async ()=>{
     return data
 }
 
+// 抓取tag列表
+const fechTagList = async (repo) =>{
+    const { data } = await axios.get(`https://api.github.com/repos/zhu-cli/${repo}/tags`)
+    return data
+}
+
+// 封装loading效果
+const waitFnloading = (fn, message) => async (...args) => {
+    const spinner = ora(message)
+    spinner.start() //开始加载
+    let result = await fn()
+     spinner.succeed() //关闭加载
+     return result
+}
+
 module.exports = async (projectName) =>{
     // 1.获取项目的模板(所有的)
-
-    const spinner = ora('fetching template....')
-    spinner.start() //开始加载
-    let repos = await fetchRepoList()
-    spinner.succeed() //关闭加载
+    let repos =await waitFnloading(fetchRepoList,'fetching template...')()
+   
     repos = repos.map((item)=>item.name)
+    console.log(repos)
     const {
         repo
     } = await Inquirer.prompt({
@@ -44,5 +57,20 @@ module.exports = async (projectName) =>{
     // 选择模板 inquirer
 
     // 下载ora(关于loading) 和 inquirer   npm i ora inquirer
+
+
+    //2 通过当前选择的项目，获取对应的版本号
+    let tags = await waitFnloading(fechTagList, 'fetching tags...')(repo)
+    tags = tags.map((item) => item.name)
+    const {tag} = await Inquirer.prompt({
+        name: 'tag',
+        type: 'list',
+        message: 'please choise tags to create project',
+        choices: tags
+    })
+    console.log(tags)
+
+    // 把模板放到一个临时的目录里 存好，以备后期使用
+    
 }
 

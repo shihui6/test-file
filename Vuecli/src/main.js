@@ -55,5 +55,5 @@ program.on('--help',()=>{
 })
 
 // 解析用户传递过来的参数
-// console.log(process.argv)
+console.log
 program.version(version).parse(process.argv)

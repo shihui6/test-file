@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+</head>
+<style>
+</style>
+
+<body>
+  <div id="app">
+    <!-- <myComponent :message='list'></myComponent>
+         -->
+    A{{msg}}
+    {{ message | capitalize }}
+    <component-b :msg="msg"></component-b>
+    <div id="goodtome"></div>
+    <input v-focus>
+  </div>
+  <script>
+    // var res = Vue.compile('<div><span>{{ wode }}</span></div>')
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '我是石惠',
+        message:'woshinibaba',
+        wode:'今天的天气真好'
+      },
+      directives: {
+        focus: {
+          // 指令的定义
+          inserted: function (el) {
+            el.focus()
+          }
+        }
+      },
+      // render:res.render,
+      filters: {
+        capitalize: function (value) {
+          console.log(value)
+          if (!value) return ''
+          value = value.toString()
+          return value.charAt(0).toUpperCase() + value.slice(1)
+        }
+      },
+      
+      components: {
+        'ComponentB': {
+          //   props: ['msg'],
+          template: `<div>B<component-c v-bind="$attrs"></component-c></div>`,
+          components: {
+            'ComponentC': {
+              props: ['msg'],
+              template: `<div>C{{msg}}
+                <button @click="dianji">点击触发值</button>
+              </div>
+              
+              `,
+              methods: {
+                dianji() {
+                  console.log(this.msg)
+                }
+              }
+
+            }
+          }
+        },
+
+      }
+    })
+    // Vue创建的方法
+    var Profile = Vue.extend({
+      template: "<p>{{firstName}}{{lastName}}{{good}}<p>",
+      data() {
+        return {
+          firstName: "shi",
+          lastName: "hui",
+          good: "good"
+        }
+      }
+    })
+    new Profile().$mount('#goodtome')
+    // 注册一个全局自定义指令 `v-focus`
+    // Vue.directive('focus', {
+    //   // 当被绑定的元素插入到 DOM 中时……
+    //   inserted: function (el) {
+    //     // 聚焦元素
+    //     el.focus()
+    //   }
+    // })
+  </script>
+</body>
+
+</html>
